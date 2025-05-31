@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard - Sistema Escolar</title>
+    <link rel="stylesheet" href="estilo/estilo.css" />
+</head>
+
+<body>
+    <header>
+        <h1>Sistema Acadêmico</h1>
+    </header>
+    <main>
+        <div class="welcome">
+            Bem-vindo, (usuario) (função)
+        </div>
+        <nav>
+            <a href="{{ url_for('listar_alunos') }}">Alunos</a>
+            <a href="{{ url_for('registrar_frequencia') }}">Registrar Frequência</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+        </nav>
+    </main>
+    <footer>
+        Escola Comunitária - Todos os direitos reservados
+    </footer>
+</body>
+
+</html>
