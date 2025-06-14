@@ -16,8 +16,20 @@ const TurmaModel = {
         );
         return result.insertId;
     },
+    update: async (id, nome_turma, serie, ano_letivo) => { // Novo para UPDATE
+        const [result] = await db.execute(
+            'UPDATE turmas SET nome_turma = ?, serie = ?, ano_letivo = ? WHERE id = ?',
+            [nome_turma, serie, ano_letivo, id]
+        );
+        return result.affectedRows;
+    },
+    delete: async (id) => { // Novo para DELETE
+        // Primeiro, desassociar alunos desta turma para evitar erro de chave estrangeira
+        await db.execute('UPDATE alunos SET turma_id = NULL WHERE turma_id = ?', [id]);
+        const [result] = await db.execute('DELETE FROM turmas WHERE id = ?', [id]);
+        return result.affectedRows;
+    },
     getTotalTurmasAtivas: async () => {
-        // Supondo que todas as turmas cadastradas são ativas para fins de demonstração
         const [rows] = await db.execute('SELECT COUNT(*) AS total FROM turmas');
         return rows[0].total;
     }

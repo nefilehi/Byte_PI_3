@@ -1,11 +1,11 @@
 const AlunoModel = require('../models/alunoModel');
-const TurmaModel = require('../models/turmaModel'); // Para buscar turma_id
+const TurmaModel = require('../models/turmaModel');
 
 const alunoController = {
     getAllAlunos: async (req, res) => {
         try {
-            const { search, turma, status } = req.query;
-            const alunos = await AlunoModel.getAll(search, turma, status);
+            const { search, turma, status, turmaId } = req.query; // turmaId para relatórios
+            const alunos = await AlunoModel.getAll(search, turma, status, turmaId);
             res.json(alunos);
         } catch (error) {
             console.error('Erro ao buscar alunos:', error);
@@ -48,7 +48,7 @@ const alunoController = {
     },
     updateAluno: async (req, res) => {
         const { id } = req.params;
-        const { nome, email, matricula, turma_nome } = req.body;
+        const { nome, email, matricula, turma_nome } = req.body; // Pode expandir para mais campos
         try {
             let turma_id = null;
             if (turma_nome) {
@@ -87,17 +87,14 @@ const alunoController = {
         try {
             const totalAlunos = await AlunoModel.getTotalAlunos();
             const alunosAtivos = await AlunoModel.getAlunosAtivos();
-            const totalTurmasAtivas = await TurmaModel.getTotalTurmasAtivas(); // Adicionado da turmaController
+            const totalTurmasAtivas = await TurmaModel.getTotalTurmasAtivas();
+            // Dados para 'aulasHoje' e 'proximasAulas' exigiriam mais lógica de agendamento no backend
             res.json({
                 totalAlunos,
                 alunosAtivos,
                 totalTurmasAtivas,
-                // aulasHoje: 12, // Este dado precisaria de mais lógica de negócio ou uma tabela de "aulas"
-                // proximasAulas: [ // Este dado também
-                //     "1º Ano - Matemática às 08:00",
-                //     "2º Ano - Português às 10:00",
-                //     "3º Ano - História às 13:00"
-                // ]
+                // aulasHoje: 0, // Mock ou implementar lógica real
+                // proximasAulas: [] // Mock ou implementar lógica real
             });
         } catch (error) {
             console.error('Erro ao buscar dados do dashboard:', error);

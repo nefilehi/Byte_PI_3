@@ -17,19 +17,20 @@ const authController = {
             }
 
             const token = jwt.sign(
-                { id: user.id, email: user.email, tipo_usuario: user.tipo_usuario },
+                { id: user.id, email: user.email, tipo_usuario: user.papel }, // Use user.papel
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
             );
 
-            res.json({ token, user: { id: user.id, nome: user.nome, email: user.email, tipo_usuario: user.tipo_usuario } });
+            res.json({ token, user: { id: user.id, nome: user.nome, email: user.email, tipo_usuario: user.papel } });
         } catch (error) {
             console.error('Erro no login:', error);
             res.status(500).json({ message: 'Erro interno do servidor' });
         }
     },
+    // Rota de registro que pode ser usada pelo front-end de usuários
     register: async (req, res) => {
-        const { nome, email, password, tipo_usuario } = req.body;
+        const { nome, email, password, papel } = req.body; // Use 'papel'
         try {
             let user = await UserModel.findByEmail(email);
             if (user) {
@@ -39,7 +40,9 @@ const authController = {
             const salt = await bcrypt.genSalt(10);
             const senhaHash = await bcrypt.hash(password, salt);
 
-            const userId = await UserModel.create(nome, email, senhaHash, tipo_usuario || 'Professor');
+            // Se a requisição vem de um admin para criar outro usuário, o 'papel' pode ser especificado.
+            // Caso contrário, use um padrão ou lógica de registro público.
+            const userId = await UserModel.create(nome, email, senhaHash, papel || 'Professor');
             res.status(201).json({ message: 'Usuário registrado com sucesso', userId });
         } catch (error) {
             console.error('Erro no registro:', error);
