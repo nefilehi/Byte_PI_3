@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - EscolaSystem</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary-color: #2a9d8f;
+            /* Um verde mais vibrante */
+            --dark-blue: #264653;
+            /* Azul escuro */
+            --light-grey: #f8f9fa;
+            --text-muted: #6c757d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-grey);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background: #ffffff;
+            padding: 2.5rem 3rem;
+            /* Aumentei o padding */
+            border-radius: 0.75rem;
+            /* Mais arredondado */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            /* Sombra mais pronunciada */
+            width: 100%;
+            max-width: 400px;
+            /* Largura máxima */
+            text-align: center;
+        }
+
+        .login-container h2 {
+            color: var(--dark-blue);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            /* Mais negrito */
+        }
+
+        .login-container .form-control {
+            border-radius: 0.5rem;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1rem;
+            /* Espaçamento entre inputs */
+            border: 1px solid var(--text-muted);
+        }
+
+        .login-container .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(42, 157, 143, 0.25);
+        }
+
+        .login-container .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .login-container .btn-primary:hover {
+            background-color: #23867b;
+            border-color: #23867b;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .flash-message {
+            color: #0f5132;
+            /* Cor mais suave para mensagem de info */
+            background-color: #d1e7dd;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        /* Adicionando cores para diferentes tipos de flash messages */
+        .flash-message.error {
+            color: #842029;
+            background-color: #f8d7da;
+        }
+
+        .flash-message.success {
+            color: #0f5132;
+            background-color: #d1e7dd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <div class="flash-message" id="flashMessage">Entre no sistema</div>
+
+        <form id="loginForm">
+            <div class="mb-3">
+                <input type="email" class="form-control" id="emailInput" placeholder="Email" required />
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" id="passwordInput" placeholder="Senha" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+            </button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const flashMessage = document.getElementById('flashMessage');
+
+            flashMessage.className = 'flash-message'; // Reset classes
+            flashMessage.textContent = 'Autenticando...';
+
+            // Simulação de chamada de API de login
+            // Em um ambiente real, você faria um fetch() para o seu backend aqui
+            try {
+                // Exemplo de chamada real:
+                // const response = await fetch('/api/login', {
+                //   method: 'POST',
+                //   headers: { 'Content-Type': 'application/json' },
+                //   body: JSON.stringify({ email, password })
+                // });
+                // const data = await response.json();
+
+                // Simulação de resposta do backend
+                await new Promise(resolve => setTimeout(resolve, 1500)); // Simula latência
+
+                if (email === 'professor@escola.com' && password === 'senha123') { // Credenciais de teste
+                    flashMessage.textContent = 'Login bem-sucedido! Redirecionando...';
+                    flashMessage.classList.add('success');
+                    // Em um ambiente real, o backend retornaria um token ou status de sucesso
+                    // e você redirecionaria o usuário
+                    window.location.href = 'dashboard.html'; // Redireciona para o dashboard
+                } else {
+                    flashMessage.textContent = 'Email ou senha incorretos.';
+                    flashMessage.classList.add('error');
+                }
+            } catch (error) {
+                console.error('Erro no login:', error);
+                flashMessage.textContent = 'Ocorreu um erro ao tentar fazer login. Tente novamente.';
+                flashMessage.classList.add('error');
+            }
+        });
+    </script>
+</body>
+
+</html>

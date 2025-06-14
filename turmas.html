@@ -3,36 +3,162 @@
 
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Turmas - EscolaSystem</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
     <style>
+        :root {
+            --primary-color: #2a9d8f;
+            /* Um verde mais vibrante */
+            --dark-blue: #264653;
+            /* Azul escuro */
+            --light-grey: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+        }
+
         body {
-            background-color: #f8f9fa;
+            background-color: var(--light-grey);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .sidebar {
             height: 100vh;
             background-color: #fff;
-            border-right: 1px solid #dee2e6;
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar .nav-link {
+            color: var(--dark-blue);
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #f0f2f5;
+            color: var(--primary-color);
         }
 
         .sidebar .nav-link.active {
-            background-color: #eef2ff;
-            color: #0d6efd;
-            font-weight: 500;
+            background-color: var(--primary-color);
+            color: #fff;
+            font-weight: 600;
         }
 
-        .card-counter {
-            border: 1px solid #dee2e6;
-            border-radius: 0.5rem;
-            padding: 1rem;
+        .sidebar .nav-link.active:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .sidebar h5 {
+            color: var(--dark-blue);
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar .text-muted.small {
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted) !important;
+        }
+
+        .sidebar .mt-5 {
+            margin-top: auto !important;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .card-custom {
+            /* Card genérico para tabelas, etc. */
+            border: none;
+            border-radius: 0.75rem;
             background-color: #ffffff;
-            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
         }
 
-        th {
-            background-color: #264653 !important;
+        .table thead th {
+            background-color: var(--dark-blue) !important;
             color: white !important;
+            font-weight: 600;
+        }
+
+        .table td,
+        .table th {
+            vertical-align: middle;
+            padding: 1rem 0.75rem;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f0f2f5;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #23867b;
+            border-color: #23867b;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-action {
+            color: var(--dark-blue);
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .icon-action:hover {
+            color: var(--primary-color);
+        }
+
+        .icon-action.delete:hover {
+            color: #dc3545;
+        }
+
+        /* Modal */
+        .modal-header {
+            background-color: var(--dark-blue);
+            color: white;
+            border-bottom: none;
+            border-top-left-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        .modal-content {
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-outline-secondary {
+            border-color: var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #e9ecef;
+            color: #495057;
         }
     </style>
 </head>
@@ -40,15 +166,35 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-md-2 sidebar p-3 bg-white border-end">
+            <nav class="col-md-2 sidebar d-none d-md-flex flex-column p-3">
                 <h5 class="mb-4">EscolaSystem</h5>
                 <p class="text-muted small">Gestão Acadêmica</p>
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="alunos_test.html">Alunos</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="turmas.html">Turmas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="frequencia.html">Frequência</a></li>
-                    <li class="nav-item"><a class="nav-link" href="relatorios.html">Relatórios</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">
+                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="alunos.html">
+                            <i class="bi bi-person-fill me-2"></i>Alunos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="turmas.html">
+                            <i class="bi bi-people-fill me-2"></i>Turmas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="frequencia.html">
+                            <i class="bi bi-check2-square me-2"></i>Frequência
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="relatorios.html">
+                            <i class="bi bi-bar-chart-line-fill me-2"></i>Relatórios
+                        </a>
+                    </li>
                 </ul>
                 <div class="mt-5">
                     <small class="text-muted">Usuário Logado</small>
@@ -57,45 +203,256 @@
                     <span class="badge bg-dark mt-2">Professor</span>
                 </div>
                 <button class="btn btn-outline-secondary btn-sm mt-4">
-                    Sair do Sistema
+                    <i class="bi bi-box-arrow-right me-1"></i>Sair do Sistema
                 </button>
             </nav>
 
             <main class="col-md-10 p-4">
-                <h3>Turmas</h3>
-                <p class="text-muted">Lista de turmas registradas</p>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h3>Turmas</h3>
+                        <p class="text-muted">Gerencie as turmas e suas informações.</p>
+                    </div>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newTurmaModal">
+                        <i class="bi bi-plus-circle-fill me-2"></i>Nova Turma
+                    </button>
+                </div>
 
-                <div class="card p-3">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nome da Turma</th>
-                                <th>Série</th>
-                                <th>Total de Alunos</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Turma A</td>
-                                <td>1º Ano</td>
-                                <td>30</td>
-                            </tr>
-                            <tr>
-                                <td>Turma B</td>
-                                <td>2º Ano</td>
-                                <td>28</td>
-                            </tr>
-                            <tr>
-                                <td>Turma C</td>
-                                <td>3º Ano</td>
-                                <td>27</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="card-custom p-4">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nome da Turma</th>
+                                    <th>Série</th>
+                                    <th>Total de Alunos</th>
+                                    <th style="width: 100px">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="turmaTableBody">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">Carregando turmas...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="noTurmasMessage" class="alert alert-info text-center mt-3 d-none" role="alert">
+                        Nenhuma turma encontrada.
+                    </div>
                 </div>
             </main>
         </div>
     </div>
+
+    <div class="modal fade" id="newTurmaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cadastrar Nova Turma</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newTurmaForm">
+                        <div class="mb-3">
+                            <label for="newTurmaNome" class="form-label">Nome da Turma</label>
+                            <input type="text" class="form-control" id="newTurmaNome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newTurmaSerie" class="form-label">Série</label>
+                            <input type="text" class="form-control" id="newTurmaSerie"
+                                placeholder="Ex: 1º Ano, 6ª Série" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="addNewTurma()">Cadastrar Turma</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editTurmaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Turma</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editTurmaForm">
+                        <input type="hidden" id="editTurmaId" />
+                        <div class="mb-3">
+                            <label for="editTurmaNome" class="form-label">Nome da Turma</label>
+                            <input type="text" class="form-control" id="editTurmaNome" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTurmaSerie" class="form-label">Série</label>
+                            <input type="text" class="form-control" id="editTurmaSerie" required />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button class="btn btn-primary" onclick="saveEditTurma()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- Dados Mockados (Simulação de Backend) ---
+        let turmas = [
+            { id: 't1', nome: "Turma A", serie: "1º Ano" },
+            { id: 't2', nome: "Turma A", serie: "2º Ano" },
+            { id: 't3', nome: "Turma B", serie: "1º Ano" },
+            { id: 't4', nome: "Turma B", serie: "2º Ano" },
+        ];
+
+        // Simulação de alunos para contagem
+        const alunosData = [
+            { id: 'a1', turmaId: "t1" },
+            { id: 'a2', turmaId: "t1" },
+            { id: 'a3', turmaId: "t2" },
+            { id: 'a4', turmaId: "t3" },
+            { id: 'a5', turmaId: "t2" },
+            { id: 'a6', turmaId: "t1" },
+            { id: 'a7', turmaId: "t1" },
+            { id: 'a8', turmaId: "t2" },
+        ];
+
+        let currentEditTurmaId = null;
+
+        // --- Funções Principais ---
+        async function fetchTurmas() {
+            // Simula uma chamada de API para obter turmas
+            await new Promise(resolve => setTimeout(resolve, 500)); // Simula latência
+            // Em um ambiente real: const response = await fetch('/api/turmas'); const data = await response.json(); turmas = data;
+            renderTable();
+        }
+
+        function getAlunosCountByTurma(turmaId) {
+            return alunosData.filter(aluno => aluno.turmaId === turmaId).length;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById("turmaTableBody");
+            tbody.innerHTML = "";
+
+            if (turmas.length === 0) {
+                document.getElementById('noTurmasMessage').classList.remove('d-none');
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Nenhuma turma cadastrada.</td></tr>`;
+            } else {
+                document.getElementById('noTurmasMessage').classList.add('d-none');
+                turmas.forEach((t) => {
+                    const alunosCount = getAlunosCountByTurma(t.id);
+                    let row = `
+                    <tr>
+                        <td>${t.nome}</td>
+                        <td>${t.serie}</td>
+                        <td>${alunosCount}</td>
+                        <td>
+                            <i class="bi bi-pencil-fill icon-action" onclick="openEditTurmaModal('${t.id}')" title="Editar Turma"></i>
+                            <i class="bi bi-trash-fill icon-action delete" onclick="confirmDeleteTurma('${t.id}', '${t.nome} - ${t.serie}')" title="Excluir Turma"></i>
+                        </td>
+                    </tr>`;
+                    tbody.innerHTML += row;
+                });
+            }
+        }
+
+        async function addNewTurma() {
+            const newNome = document.getElementById('newTurmaNome').value;
+            const newSerie = document.getElementById('newTurmaSerie').value;
+
+            if (!newNome || !newSerie) {
+                alert('Por favor, preencha todos os campos para cadastrar a turma.');
+                return;
+            }
+
+            // Simulação de chamada de API para adicionar turma
+            await new Promise(resolve => setTimeout(resolve, 700)); // Simula latência
+
+            const newId = 't' + (turmas.length + 1); // Gerar ID simples para simulação
+
+            const novaTurma = {
+                id: newId,
+                nome: newNome,
+                serie: newSerie
+            };
+
+            turmas.push(novaTurma);
+            renderTable();
+            document.getElementById('newTurmaForm').reset(); // Limpa o formulário
+            bootstrap.Modal.getInstance(document.getElementById("newTurmaModal")).hide();
+            alert('Turma cadastrada com sucesso!');
+        }
+
+        async function openEditTurmaModal(turmaId) {
+            currentEditTurmaId = turmaId;
+            const turma = turmas.find(t => t.id === turmaId);
+            if (turma) {
+                document.getElementById("editTurmaId").value = turma.id;
+                document.getElementById("editTurmaNome").value = turma.nome;
+                document.getElementById("editTurmaSerie").value = turma.serie;
+
+                const modal = new bootstrap.Modal(document.getElementById("editTurmaModal"));
+                modal.show();
+            }
+        }
+
+        async function saveEditTurma() {
+            const turmaId = document.getElementById("editTurmaId").value;
+            const nome = document.getElementById("editTurmaNome").value;
+            const serie = document.getElementById("editTurmaSerie").value;
+
+            // Simulação de chamada de API para atualizar turma
+            await new Promise(resolve => setTimeout(resolve, 500)); // Simula latência
+
+            const turmaIndex = turmas.findIndex(t => t.id === turmaId);
+            if (turmaIndex !== -1) {
+                turmas[turmaIndex] = {
+                    ...turmas[turmaIndex],
+                    nome, serie
+                };
+                renderTable();
+                bootstrap.Modal.getInstance(document.getElementById("editTurmaModal")).hide();
+                alert('Turma atualizada com sucesso!');
+            } else {
+                alert('Erro: Turma não encontrada.');
+            }
+        }
+
+        function confirmDeleteTurma(turmaId, turmaNome) {
+            if (confirm(`Tem certeza que deseja excluir a turma "${turmaNome}"? Isso também afetará os alunos associados a ela (simulação). Esta ação é irreversível.`)) {
+                deleteTurma(turmaId);
+            }
+        }
+
+        async function deleteTurma(turmaId) {
+            // Simula chamada de API para deletar turma
+            await new Promise(resolve => setTimeout(resolve, 500)); // Simula latência
+
+            const initialLength = turmas.length;
+            turmas = turmas.filter(t => t.id !== turmaId);
+            // Em um ambiente real, você também desassociaria/excluiria alunos dessa turma no backend
+            // alunosData = alunosData.filter(a => a.turmaId !== turmaId); // Se a regra for excluir alunos
+
+            if (turmas.length < initialLength) {
+                renderTable();
+                alert('Turma excluída com sucesso!');
+            } else {
+                alert('Erro: Turma não encontrada para exclusão.');
+            }
+        }
+
+        // --- Inicialização ---
+        document.addEventListener('DOMContentLoaded', fetchTurmas);
+    </script>
 </body>
 
 </html>
